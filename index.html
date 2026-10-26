@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grindbook · Tax tracker for side hustles (Google Sheets)</title>
+<meta name="description" content="A Google Sheets tracker for DoorDash, Etsy, freelance and other side income. Log what you earn and spend; it tells you what to set aside and when the quarterly payments are due.">
+<link rel="icon" href="images/logo.png">
+<!-- PINTEREST CLAIM TAG GOES HERE -->
+<style>
+  :root { --navy:#1f232b; --navy2:#2a2f3a; --mint:#2fe3a5; --green:#3d7f5a; --ink:#1b1e24; --muted:#636a78; --line:#e3e5ea; --paper:#f6f6f3; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter, "Segoe UI", system-ui, -apple-system, sans-serif; color:var(--ink); background:var(--paper); line-height:1.6; }
+  img { max-width:100%; display:block; }
+  .wrap { max-width:1040px; margin:0 auto; padding:0 20px; }
+  a { color:inherit; }
+
+  .top { background:var(--navy); color:#fff; }
+  .bar { display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:19px; text-decoration:none; }
+  .brand img { width:34px; height:34px; border-radius:7px; }
+  .bar nav a { color:#c9ced8; text-decoration:none; margin-left:20px; font-size:15px; }
+  .bar nav a:hover { color:#fff; }
+
+  .hero { display:grid; grid-template-columns:1.05fr 1fr; gap:40px; align-items:center; padding:46px 0 60px; }
+  .hero h1 { font-size:clamp(30px, 4.6vw, 46px); line-height:1.12; margin:0 0 16px; letter-spacing:-.01em; }
+  .hero h1 em { font-style:normal; color:var(--mint); }
+  .hero p { color:#c9ced8; font-size:18px; margin:0 0 26px; max-width:470px; }
+  .buy { display:inline-flex; align-items:center; gap:12px; background:var(--mint); color:#0d2a1f; font-weight:800; padding:13px 22px; border-radius:8px; text-decoration:none; }
+  .buy small { font-weight:600; opacity:.75; }
+  .sub { display:block; margin-top:12px; font-size:13px; color:#99a0ad; }
+  .shot { border-radius:10px; overflow:hidden; box-shadow:0 18px 50px rgba(0,0,0,.45); border:1px solid #3a404d; background:#fff; transform:rotate(.6deg); }
+
+  section { padding:58px 0; }
+  h2 { font-size:28px; margin:0 0 8px; letter-spacing:-.01em; }
+  .intro { color:var(--muted); max-width:620px; margin:0 0 30px; }
+
+  .tab { display:grid; grid-template-columns:1fr 1.25fr; gap:36px; align-items:center; padding:26px 0; border-top:1px solid var(--line); }
+  .tab:nth-of-type(even) .pic { order:-1; }
+  .tab h3 { font-size:21px; margin:0 0 6px; }
+  .tab .label { font-size:12px; font-weight:700; letter-spacing:.12em; color:var(--green); text-transform:uppercase; }
+  .tab p { color:var(--muted); margin:6px 0 0; }
+  .pic { border:1px solid var(--line); border-radius:8px; overflow:hidden; background:#fff; box-shadow:0 6px 22px rgba(20,25,35,.08); }
+
+  .who { background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .who ul { columns:2; padding-left:18px; color:var(--muted); margin:0; }
+  .who li { margin:0 0 6px; break-inside:avoid; }
+
+  .faq details { border-bottom:1px solid var(--line); padding:14px 0; }
+  .faq summary { cursor:pointer; font-weight:700; }
+  .faq details p { color:var(--muted); margin:8px 0 0; }
+
+  .end { background:var(--navy); color:#fff; text-align:center; }
+  .end p { color:#c9ced8; margin:0 0 22px; }
+  footer { padding:22px 0 34px; font-size:13px; color:var(--muted); display:flex; flex-wrap:wrap; gap:14px; justify-content:space-between; }
+  footer a { color:var(--muted); }
+
+  @media (max-width:760px) {
+    .hero, .tab { grid-template-columns:1fr; }
+    .tab:nth-of-type(even) .pic { order:0; }
+    .who ul { columns:1; }
+    .bar nav a:first-child { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="./"><img src="images/logo.png" alt="">Grindbook</a>
+      <nav><a href="#inside">What's inside</a><a href="#faq">FAQ</a><a href="https://www.etsy.com/listing/4591638085">Etsy shop</a></nav>
+    </div>
+    <div class="hero">
+      <div>
+        <h1>Side money is great until April. <em>Grindbook</em> keeps the tax part simple.</h1>
+        <p>A Google Sheet for DoorDash, Etsy, freelance and any other side income. Add a row when you get paid. It works out
+          what to put aside and tells you what's due each quarter.</p>
+        <a class="buy" href="https://www.etsy.com/listing/4591638085">Get it on Etsy <small>$12</small></a>
+        <span class="sub">Instant download · one-time price · you keep your own copy in Google Drive</span>
+      </div>
+      <div class="shot"><img src="images/dashboard.png" alt="Grindbook dashboard showing next payment, amount set aside, earnings and profit"></div>
+    </div>
+  </div>
+</div>
+
+<section id="inside">
+  <div class="wrap">
+    <h2>What's inside</h2>
+    <p class="intro">Five tabs. Most weeks you only touch the first two. The numbers below are sample data so you can see how it fills in.</p>
+
+    <div class="tab">
+      <div><span class="label">Money In</span><h3>One row per payment</h3>
+        <p>Date, where it came from, the amount. Add miles if you drove. It suggests a set-aside for each payment (about 12% by default),
+          or you can pick your own percentage in My Settings.</p></div>
+      <div class="pic"><img src="images/money-in.png" alt="Money In tab with DoorDash, Etsy and freelance payments" loading="lazy"></div>
+    </div>
+
+    <div class="tab">
+      <div><span class="label">Money Out</span><h3>Expenses and receipts</h3>
+        <p>Supplies, platform fees, software, your share of the phone bill. Pick a category, tick the box once you've saved the
+          receipt, and it comes off your profit automatically.</p></div>
+      <div class="pic"><img src="images/money-out.png" alt="Money Out tab with categorized expenses" loading="lazy"></div>
+    </div>
+
+    <div class="tab">
+      <div><span class="label">Quarterly</span><h3>What to pay, and by when</h3>
+        <p>The IRS due dates are uneven (Apr 15, Jun 15, Sep 15, Jan 15). This tab shows what you owe so far for each one and the amount
+          still left to pay. A monthly checkbox reminds you to actually move the money to savings.</p></div>
+      <div class="pic"><img src="images/quarterly.png" alt="Quarterly tab with Q1 to Q4 due dates and amounts" loading="lazy"></div>
+    </div>
+
+    <div class="tab">
+      <div><span class="label">Year-End</span><h3>A summary for tax time</h3>
+        <p>Income, expenses, business miles and the mileage deduction, your profit, an estimate of self-employment and state tax,
+          and how much came from each source. Bring it to whoever does your taxes, or use it to do your own.</p></div>
+      <div class="pic"><img src="images/year-end.png" alt="Year-end summary tab" loading="lazy"></div>
+    </div>
+
+    <div class="tab">
+      <div><span class="label">Dashboard</span><h3>Plus a little motivation</h3>
+        <p>Logging a payment, saving a receipt and paying on time earn Grind Points. You rank up from Seed as you keep a streak going.
+          It sounds silly, but it's what gets people to keep the sheet up to date.</p></div>
+      <div class="pic"><img src="images/dashboard.png" alt="Dashboard with Grind rank and weekly checklist" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="who">
+  <div class="wrap">
+    <h2>Made for people who earn on the side</h2>
+    <p class="intro">If any of this is you, it'll probably help:</p>
+    <ul>
+      <li>Delivery and rideshare drivers (DoorDash, Uber Eats, Instacart)</li>
+      <li>Etsy, eBay and Depop sellers</li>
+      <li>Freelance designers, editors and tutors</li>
+      <li>Anyone getting a 1099 for the first time</li>
+      <li>Students with a part-time hustle</li>
+      <li>People who'd rather not pay for a monthly app</li>
+    </ul>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <details><summary>Do I need Excel or a paid app?</summary>
+      <p>No. It's a Google Sheet. You need a free Google account. After you buy, you'll get a link that makes your own copy in your Drive.</p></details>
+    <details><summary>Is this tax advice?</summary>
+      <p>No. Grindbook gives estimates to help you plan and save. Everyone's situation is different, so check with a tax professional for yours.</p></details>
+    <details><summary>Can I change the set-aside percentage?</summary>
+      <p>Yes. It starts at about 12%. Change it in My Settings and every row updates.</p></details>
+    <details><summary>Does it connect to my bank or apps?</summary>
+      <p>No, and that's on purpose. Nothing is linked and no one else sees your numbers. You type in what you earned.</p></details>
+    <details><summary>Is it a subscription?</summary>
+      <p>No. You pay $12 once on Etsy and the copy is yours.</p></details>
+    <details><summary>Something isn't working. Who do I ask?</summary>
+      <p>Message the shop on Etsy or email grindbook.shop@gmail.com. A real person answers.</p></details>
+  </div>
+</section>
+
+<section class="end">
+  <div class="wrap">
+    <h2>Start before the next due date</h2>
+    <p>The next quarterly payment is January 15. Setting it up takes about ten minutes.</p>
+    <a class="buy" href="https://www.etsy.com/listing/4591638085">Get Grindbook on Etsy <small>$12</small></a>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>© 2026 Grindbook · An SJ Holdings brand · Minnesota</span>
+    <span><a href="privacy.html">Privacy policy</a> · <a href="mailto:grindbook.shop@gmail.com">grindbook.shop@gmail.com</a></span>
+  </footer>
+</div>
+
+</body>
+</html>
